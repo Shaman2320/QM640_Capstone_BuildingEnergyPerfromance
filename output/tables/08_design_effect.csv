@@ -1,0 +1,2 @@
+n_replicates,weighted_mean_log_EUI,naive_srs_variance,jackknife_variance,design_effect,effective_n
+151,3.7776,0.000138,0.000847,6.14,1036
