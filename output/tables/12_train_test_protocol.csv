@@ -1,5 +1,0 @@
-stage,partitioning,reason
-RQ1 survey-weighted regression,None (full sample),Estimates population parameters; variance from 151 JK2 replicates
-RQ2 vintage comparison,None (full sample),Estimates population parameters; variance from 151 JK2 replicates
-RQ3 model comparison,"80/20 holdout stratified on PBA, plus 5-fold CV repeated 5 times",Generalisation error requires unseen data
-RQ4 band classification,80/20 holdout stratified on PBA,Tercile cut points fitted on the training partition only

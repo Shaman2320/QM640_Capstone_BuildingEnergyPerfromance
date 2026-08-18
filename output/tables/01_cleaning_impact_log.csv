@@ -1,8 +1,0 @@
-step,issue,variables,detection,treatment,records_affected,records_removed,n_after,pct_of_raw
-1,Undefined response,MFBTU (EUI undefined without it),Null count on MFBTU,Records excluded,79,79,6357,1.23
-2,Structural missingness,MAINHT,Null count; codebook confirms no-system meaning,Recoded to explicit 'none reported' category,429,0,6357,6.67
-3,Structural missingness,MAINCL,Null count; codebook confirms no-system meaning,Recoded to explicit 'none reported' category,456,0,6357,7.09
-4,Banded category codes read as counts,"NFLOOR (994, 995)",CBECS User's Guide review,Recoded to ordered categorical (rank codes),553,0,6357,8.59
-5,Banded category codes read as percentages,GLSSPC (6 bands),CBECS User's Guide review,Retained as ordered categorical,6357,0,6357,98.77
-6,Documented top-code read as a height,FLCEILHT (995 = more than 50 ft),"Skewness screen, then codebook confirmation",Capped at 50 ft plus separate top-code indicator,14,0,6357,0.22
-7,Duplicate records,PUBID,Duplicated-identifier count,None required,0,0,6357,0.0

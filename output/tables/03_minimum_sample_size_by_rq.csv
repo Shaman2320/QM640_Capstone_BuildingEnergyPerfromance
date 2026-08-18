@@ -1,5 +1,0 @@
-RQ,method,key_parameters,minimum_N,available_N,margin_pct,adequate
-RQ1,Green's rule; correlation power for SHAP step,"k=15, 50+8k=170; r=0.2, alpha=0.05, power=0.8 -> n=194",194,6357,3176.8,True
-RQ2,"Non-central F power, five vintage cohorts","groups=5, f=0.25, alpha=0.05, power=0.8",196,6357,3143.4,True
-RQ3,"CI on hit rate, held-out test set","z=1.960, e=0.05, p=0.5; test n=385; test share=0.2",1925,6357,230.2,True
-RQ4,"CI on per-class recall, three bands","z=1.960, e=0.05, p=0.5; 3 x 385 test; test share=0.2",5775,6357,10.1,True
