@@ -1,0 +1,3 @@
+test,purpose,statistic,p_value,conclusion
+"Levene's test (median-centred, unweighted)",check equal-variance assumption across cohorts,0.717,0.579972,fail to reject
+Unweighted one-way ANOVA (F test),check the vintage finding is not driven by FINALWT,1.222,0.299051,fail to reject

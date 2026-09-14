@@ -1,0 +1,2 @@
+n_buildings,n_cohorts,reference_cohort,weighted_R2_oneway,weighted_R2_twoway_with_PBA,R2_gain_from_PBA,Wald_oneway,Wald_twoway_with_PBA,Wald_ratio_twoway_over_oneway,p_wald_oneway,p_wald_twoway,eta_squared_vintage_alone,cohen_f_squared,effect_interpretation,levene_p,unweighted_anova_p,n_pairs_significant_bonferroni,n_pairs_total
+6357,5,1_Pre-1946,0.001,0.3689,0.3679,2.05,2.33,1.14,0.7273398316480426,0.6748159284004349,0.001,0.001,negligible (below Cohen's small threshold of f^2 = 0.02),0.579972,0.299051,0,10

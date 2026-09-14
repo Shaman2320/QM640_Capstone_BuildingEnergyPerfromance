@@ -1,0 +1,2 @@
+test,n_restrictions,W_statistic,df,p_value,W_ratio_twoway_over_oneway,R2_oneway,R2_twoway,R2_gain_from_PBA,conclusion
+"Joint Wald on cohort effects (two-way, controls for PBA)",4,2.333,4,0.6748159284004349,1.14,0.001,0.3689,0.3679,fail to reject

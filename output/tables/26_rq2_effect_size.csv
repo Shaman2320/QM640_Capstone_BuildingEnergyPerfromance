@@ -1,0 +1,2 @@
+metric,eta_squared,cohen_f_squared,interpretation,reference
+"Weighted eta^2 (vintage main effect, one-way)",0.001,0.001,negligible (below Cohen's small threshold of f^2 = 0.02),"Cohen (1988), Statistical Power Analysis, ch. 9"

@@ -1,0 +1,2 @@
+test,n_restrictions,W_statistic,df,p_value,conclusion
+Joint Wald on cohort effects (one-way),4,2.046,4,0.7273398316480426,fail to reject
