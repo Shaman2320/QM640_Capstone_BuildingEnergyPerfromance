@@ -96,7 +96,7 @@
   .peer-scale .sub, .drivers .sub, .confidence .sub{ font-size:12.5px; color:var(--ink-faint); margin:0 0 14px; }
   .scale-track{ position:relative; height:10px; background:linear-gradient(to right, var(--band-low) 0 33%, var(--band-medium) 33% 67%, var(--band-high) 67% 100%); border-radius:2px; opacity:.55; margin:0 6px; }
   .scale-marker{ position:absolute; top:-7px; width:2px; height:24px; background:var(--ink); transform:translateX(-1px); transition:left .3s ease; }
-  .scale-marker::after{ content:attr(data-label); position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:11px; white-space:nowrap; color:var(--ink); }
+  .scale-marker::after{ content:attr(data-label); position:absolute; top:-18px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:11px; white-space:nowrap; color:var(--ink); background:var(--panel); padding:0 4px; }
   .scale-ticks{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); margin:10px 6px 0; }
 
   .drivers{ padding:18px 22px 6px; border-bottom:1px solid var(--rule); }
@@ -250,7 +250,7 @@
       <div class="peer-scale">
         <h3>Where this design falls among its peers</h3>
         <p class="sub">Position between this activity's trained low/medium and medium/high cut points</p>
-        <div class="scale-track"><div class="scale-marker" id="scaleMarker" data-label=""></div></div>
+        <div class="scale-track" style="margin-top:26px;"><div class="scale-marker" id="scaleMarker" data-label=""></div></div>
         <div class="scale-ticks"><span id="tickLow"></span><span id="tickMid"></span><span id="tickHigh"></span></div>
       </div>
 
@@ -297,8 +297,7 @@
       return;
     }
     $("mainApp").classList.remove("hidden");
-    $("provenanceText").textContent =
-      `Model loaded: N = ${MODEL.meta.n.toLocaleString()} buildings, weighted R\u00b2 = ${MODEL.meta.regression_r2_weighted.toFixed(3)} (concept-stage refit), classifier \u03ba = ${MODEL.meta.classifier_kappa.toFixed(3)}`;
+    $("provenance").style.display = "none";
     $("kappaStat").textContent = "\u03ba = " + MODEL.meta.classifier_kappa.toFixed(3).replace(/^0/, "");
     initUI();
   }
