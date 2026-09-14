@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept-Stage Energy Screening — Early Design Assessment</title>
+<style>
+  :root{
+    --paper:#EEE9DD;
+    --panel:#F8F5EE;
+    --ink:#24211B;
+    --ink-soft:#665F4F;
+    --ink-faint:#948C77;
+    --rule:#D9D1BC;
+    --accent:#2C4A5E;
+    --accent-tint:#E3EAEC;
+    --band-low:#4F6B4F;
+    --band-low-tint:#E7EDE3;
+    --band-medium:#A9812F;
+    --band-medium-tint:#F3EADA;
+    --band-high:#9A4230;
+    --band-high-tint:#F1E1DA;
+    --serif: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.5; }
+  ::selection{ background:var(--accent-tint); color:var(--accent); }
+  a{ color:var(--accent); }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  header.masthead{ border-bottom:1px solid var(--rule); padding:28px 32px 24px; max-width:1180px; margin:0 auto; }
+  header.masthead h1{ font-family:var(--serif); font-weight:600; font-size:clamp(24px, 3vw, 32px); line-height:1.15; margin:0 0 8px; max-width:20ch; }
+  header.masthead p{ margin:0; color:var(--ink-soft); max-width:64ch; font-size:14.5px; }
+  .provenance{
+    display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+    font-family:var(--mono); font-size:11.5px; color:var(--ink-faint);
+  }
+  .provenance .dot{ width:7px; height:7px; border-radius:50%; background:var(--band-low); flex:none; }
+  .provenance .dot.warn{ background:var(--band-high); }
+
+  main{ max-width:1180px; margin:0 auto; padding:28px 32px 64px; display:grid; grid-template-columns:360px 1fr; gap:28px; align-items:start; }
+  @media (max-width:880px){ main{ grid-template-columns:1fr; padding:20px 18px 48px; } header.masthead{ padding:22px 18px 20px; } }
+
+  section.panel{ background:var(--panel); border:1px solid var(--rule); }
+  .panel-title{ font-family:var(--serif); font-size:18px; font-weight:600; margin:0; padding:16px 20px 14px; border-bottom:1px solid var(--rule); }
+  .panel-title small{ display:block; font-family:var(--sans); font-weight:400; font-size:12.5px; color:var(--ink-faint); margin-top:3px; }
+
+  form{ padding:18px 20px 22px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:5px; }
+  .field .hint{ font-size:11.5px; color:var(--ink-faint); margin-top:4px; }
+  select, input[type="number"]{ width:100%; font:inherit; font-size:14px; color:var(--ink); background:#fff; border:1px solid var(--rule); padding:8px 10px; border-radius:2px; }
+  select:hover, input:hover{ border-color:var(--ink-faint); }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .unit-input{ position:relative; }
+  .unit-input span{ position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--ink-faint); pointer-events:none; }
+  .unit-input input{ padding-right:44px; }
+
+  fieldset{ border:none; padding:0; margin:0 0 18px; }
+  fieldset legend{ font-size:12.5px; font-weight:600; color:var(--ink-soft); padding:0 0 8px; width:100%; }
+  .glazing-scale{ display:grid; grid-template-columns:repeat(6,1fr); gap:4px; }
+  .glazing-scale button{ font:inherit; font-family:var(--mono); font-size:12px; padding:8px 2px; border:1px solid var(--rule); background:#fff; color:var(--ink-soft); cursor:pointer; border-radius:2px; }
+  .glazing-scale button:hover{ border-color:var(--accent); }
+  .glazing-scale button[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .glazing-caption{ font-size:11.5px; color:var(--ink-faint); margin-top:6px; }
+
+  .checkbox-row{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); margin:-4px 0 16px; }
+  .checkbox-row input{ width:auto; }
+
+  .use-typical{
+    font-size:11.5px; color:var(--accent); background:none; border:none; padding:0;
+    cursor:pointer; text-decoration:underline; font-family:inherit;
+  }
+
+  .results-grid{ display:grid; gap:20px; }
+  .headline{ display:grid; grid-template-columns:auto 1fr; gap:24px; padding:22px 22px 20px; border-bottom:1px solid var(--rule); align-items:center; }
+  @media (max-width:640px){ .headline{ grid-template-columns:1fr; } }
+  .band-badge{ text-align:center; padding:18px 26px; border-radius:2px; min-width:150px; }
+  .band-badge .band-name{ font-family:var(--serif); font-size:26px; font-weight:700; margin:0; }
+  .band-badge .band-label{ font-family:var(--sans); font-size:11.5px; color:var(--ink-soft); margin:2px 0 0; }
+  .band-badge.low{ background:var(--band-low-tint); } .band-badge.low .band-name, .band-badge.low .band-label{ color:var(--band-low); }
+  .band-badge.medium{ background:var(--band-medium-tint); } .band-badge.medium .band-name, .band-badge.medium .band-label{ color:var(--band-medium); }
+  .band-badge.high{ background:var(--band-high-tint); } .band-badge.high .band-name, .band-badge.high .band-label{ color:var(--band-high); }
+  .headline-detail p{ margin:0 0 6px; color:var(--ink-soft); font-size:14px; }
+  .headline-detail .eui-value{ font-family:var(--mono); font-size:15px; color:var(--ink); }
+  .headline-detail .eui-value b{ font-size:19px; }
+  .band-probs{ display:flex; gap:10px; margin-top:8px; font-family:var(--mono); font-size:11px; color:var(--ink-faint); }
+  .medium-flag{ margin-top:8px; font-size:12.5px; color:var(--band-medium); background:var(--band-medium-tint); display:inline-block; padding:5px 10px; border-radius:2px; }
+  .pooled-flag{ margin-top:8px; font-size:12.5px; color:var(--ink-soft); background:var(--accent-tint); display:inline-block; padding:5px 10px; border-radius:2px; }
+
+  .peer-scale{ padding:18px 22px 22px; border-bottom:1px solid var(--rule); }
+  .peer-scale h3, .drivers h3, .confidence h3{ font-family:var(--serif); font-size:15px; font-weight:600; margin:0 0 4px; }
+  .peer-scale .sub, .drivers .sub, .confidence .sub{ font-size:12.5px; color:var(--ink-faint); margin:0 0 14px; }
+  .scale-track{ position:relative; height:10px; background:linear-gradient(to right, var(--band-low) 0 33%, var(--band-medium) 33% 67%, var(--band-high) 67% 100%); border-radius:2px; opacity:.55; margin:0 6px; }
+  .scale-marker{ position:absolute; top:-7px; width:2px; height:24px; background:var(--ink); transform:translateX(-1px); transition:left .3s ease; }
+  .scale-marker::after{ content:attr(data-label); position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:11px; white-space:nowrap; color:var(--ink); }
+  .scale-ticks{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); margin:10px 6px 0; }
+
+  .drivers{ padding:18px 22px 6px; border-bottom:1px solid var(--rule); }
+  .driver-row{ display:grid; grid-template-columns:150px 1fr 64px; align-items:center; gap:10px; margin-bottom:10px; font-size:13px; }
+  .driver-row .d-label{ color:var(--ink-soft); }
+  .driver-row .d-bar-track{ position:relative; height:8px; background:var(--rule); border-radius:2px; }
+  .driver-row .d-bar-fill{ position:absolute; top:0; height:100%; border-radius:2px; background:var(--accent); }
+  .driver-row .d-bar-fill.negative{ background:var(--band-low); }
+  .driver-row .d-value{ font-family:var(--mono); font-size:12.5px; text-align:right; }
+  .driver-row .d-value.up{ color:var(--band-high); }
+  .driver-row .d-value.down{ color:var(--band-low); }
+  .drivers-note{ font-size:11.5px; color:var(--ink-faint); margin:4px 0 16px; }
+
+  .confidence{ padding:18px 22px 20px; }
+  .confidence-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
+  @media (max-width:640px){ .confidence-grid{ grid-template-columns:1fr; } }
+  .confidence-grid .stat{ border-left:2px solid var(--accent); padding-left:10px; }
+  .confidence-grid .stat .num{ font-family:var(--mono); font-size:20px; display:block; }
+  .confidence-grid .stat .lab{ font-size:11.5px; color:var(--ink-faint); }
+
+  details.about{ margin-top:20px; background:var(--panel); border:1px solid var(--rule); }
+  details.about summary{ cursor:pointer; list-style:none; padding:14px 20px; font-family:var(--serif); font-weight:600; font-size:14.5px; display:flex; align-items:center; gap:8px; }
+  details.about summary::-webkit-details-marker{ display:none; }
+  details.about summary::before{ content:"+"; font-family:var(--mono); color:var(--accent); font-weight:700; }
+  details.about[open] summary::before{ content:"\2013"; }
+  details.about .about-body{ padding:0 20px 20px; font-size:13px; color:var(--ink-soft); border-top:1px solid var(--rule); }
+  details.about .about-body p{ margin:14px 0 0; }
+  details.about .about-body code{ font-family:var(--mono); font-size:12px; background:var(--accent-tint); padding:1px 4px; }
+
+  footer{ max-width:1180px; margin:0 auto; padding:0 32px 40px; font-size:12px; color:var(--ink-faint); }
+  @media (max-width:880px){ footer{ padding:0 18px 32px; } }
+
+  .load-error{
+    max-width:1180px; margin:60px auto; padding:28px 32px; background:var(--band-high-tint);
+    border-left:3px solid var(--band-high); font-size:14px; color:var(--ink);
+  }
+  .load-error h2{ font-family:var(--serif); margin:0 0 10px; font-size:19px; }
+  .load-error code{ font-family:var(--mono); background:#fff; padding:2px 6px; border-radius:2px; }
+  .hidden{ display:none !important; }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <h1>Energy Band Predictor</h1>
+  <p>Built from a survey-weighted analysis of 6,357 U.S. commercial buildings (2018 CBECS).</p>
+  <p class="provenance" id="provenance"><span class="dot" id="provenanceDot"></span><span id="provenanceText">Loading model.json…</span></p>
+</header>
+
+<div id="loadError" class="load-error hidden">
+  <h2>Couldn't load the model</h2>
+  <p>This page reads its fitted coefficients from <code>model.json</code>, which browsers block when a page is opened directly from disk (<code>file://</code>). Serve the folder over HTTP instead:</p>
+  <p><code>python3 -m http.server 8000</code> — then open <code>http://localhost:8000/</code></p>
+  <p>Hosted on GitHub Pages, this restriction doesn't apply and the page loads normally.</p>
+</div>
+
+<main id="mainApp" class="hidden">
+  <section class="panel" aria-label="Design inputs">
+    <h2 class="panel-title">Design Parameters</h2>
+    <form id="inputForm">
+      <div class="field">
+        <label for="activity">Principal building activity</label>
+        <select id="activity"></select>
+        <p class="hint"><button type="button" class="use-typical" id="useTypical">Fill in a typical building of this type</button></p>
+      </div>
+
+      <div class="field">
+        <label for="sqft">Gross floor area</label>
+        <div class="unit-input"><input type="number" id="sqft" min="500" step="500"><span>sq ft</span></div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="floors">Number of floors</label>
+          <input type="number" id="floors" min="1" step="1">
+        </div>
+        <div class="field">
+          <label for="ceiling">Ceiling height</label>
+          <div class="unit-input"><input type="number" id="ceiling" min="7" step="0.5"><span>ft</span></div>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Glazing — share of exterior wall that is glass</legend>
+        <div class="glazing-scale" id="glazingScale" role="group" aria-label="Glazing band, 1 to 6"></div>
+        <p class="glazing-caption" id="glazingCaption"></p>
+      </fieldset>
+
+      <div class="row2">
+        <div class="field">
+          <label for="wall">Wall construction</label>
+          <select id="wall"></select>
+        </div>
+        <div class="field">
+          <label for="roof">Roof construction</label>
+          <select id="roof"></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="vintage">Construction vintage</label>
+        <select id="vintage"></select>
+        <p class="hint">Vintage was tested directly in the study (RQ2) and found to have no detectable effect on energy use — included here for completeness, not because it moves the estimate much.</p>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="hours">Weekly operating hours</label>
+          <input type="number" id="hours" min="1" max="168" step="1">
+        </div>
+        <div class="field">
+          <label for="workers">Workers, main shift</label>
+          <input type="number" id="workers" min="0" step="1">
+        </div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="open24">
+        <label for="open24" style="margin:0;">Operates 24 hours a day</label>
+      </div>
+
+      <div class="field">
+        <label for="climate">Climate</label>
+        <select id="climate"></select>
+      </div>
+      <div class="row2" id="customClimateRow" style="display:none;">
+        <div class="field"><label for="hdd">Heating degree days</label><input type="number" id="hdd" min="0" step="50"></div>
+        <div class="field"><label for="cdd">Cooling degree days</label><input type="number" id="cdd" min="0" step="50"></div>
+      </div>
+    </form>
+  </section>
+
+  <div class="results-grid">
+    <section class="panel" aria-label="Assessment">
+      <h2 class="panel-title">Assessment<small>Relative to other buildings of the same activity type</small></h2>
+      <div class="headline">
+        <div class="band-badge" id="bandBadge">
+          <p class="band-name" id="bandName">—</p>
+          <p class="band-label" id="bandLabel">Energy band</p>
+        </div>
+        <div class="headline-detail">
+          <p class="eui-value">Estimated site EUI: <b id="euiValue">—</b> kBtu/sq ft/yr</p>
+          <p>Activity band boundaries: <span id="rangeValue">—</span></p>
+          <p class="band-probs" id="bandProbs"></p>
+          <p id="mediumFlagWrap" style="display:none;"><span class="medium-flag">Medium-band calls are the least certain part of this tool — see Reliability below.</span></p>
+          <p id="pooledFlagWrap" style="display:none;"><span class="pooled-flag" id="pooledFlagText"></span></p>
+        </div>
+      </div>
+
+      <div class="peer-scale">
+        <h3>Where this design falls among its peers</h3>
+        <p class="sub">Position between this activity's trained low/medium and medium/high cut points</p>
+        <div class="scale-track"><div class="scale-marker" id="scaleMarker" data-label=""></div></div>
+        <div class="scale-ticks"><span id="tickLow"></span><span id="tickMid"></span><span id="tickHigh"></span></div>
+      </div>
+
+      <div class="drivers">
+        <h3>What's driving this</h3>
+        <p class="sub">Effect of each input relative to a typical building of the same activity</p>
+        <div id="driversList"></div>
+        <p class="drivers-note">Reference point: the median/modal values observed for this activity in the study sample (shown by "Fill in a typical building" above).</p>
+      </div>
+
+      <div class="confidence">
+        <h3>How reliable is this</h3>
+        <p class="sub">Measured performance of the underlying classifier on held-out buildings (N = 6,357)</p>
+        <div class="confidence-grid">
+          <div class="stat"><span class="num">87.3%</span><span class="lab">correct or one band off</span></div>
+          <div class="stat"><span class="num">12.7%</span><span class="lab">outright reversals (low called high, or reverse)</span></div>
+          <div class="stat"><span class="num" id="kappaStat">κ = .240</span><span class="lab">agreement beyond chance — "fair," 95% CI [.202, .281]</span></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  A screening aid, not a performance guarantee. Median prediction error in the source study was about 30 percent, so the estimated intensity is an order-of-magnitude guide rather than a figure to put in a specification.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  let MODEL = null;
+
+  async function boot(){
+    try{
+      const res = await fetch("./model.json");
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      MODEL = await res.json();
+    }catch(err){
+      $("loadError").classList.remove("hidden");
+      $("provenanceText").textContent = "model.json failed to load";
+      $("provenanceDot").classList.add("warn");
+      return;
+    }
+    $("mainApp").classList.remove("hidden");
+    $("provenanceText").textContent =
+      `Model loaded: N = ${MODEL.meta.n.toLocaleString()} buildings, weighted R\u00b2 = ${MODEL.meta.regression_r2_weighted.toFixed(3)} (concept-stage refit), classifier \u03ba = ${MODEL.meta.classifier_kappa.toFixed(3)}`;
+    $("kappaStat").textContent = "\u03ba = " + MODEL.meta.classifier_kappa.toFixed(3).replace(/^0/, "");
+    initUI();
+  }
+
+  const VINTAGE_LABELS = {
+    2: "Before 1946", 3: "1946\u20131959", 4: "1960\u20131969", 5: "1970\u20131979",
+    6: "1980\u20131989", 7: "1990\u20131999", 8: "2000\u20132012", 9: "2013\u20132018"
+  };
+  const GLAZING_CAPTIONS = {
+    1: "1% or less glazed", 2: "roughly 2\u201310% glazed", 3: "roughly 11\u201325% glazed",
+    4: "roughly 26\u201350% glazed", 5: "roughly 51\u201375% glazed", 6: "roughly 76\u2013100% glazed"
+  };
+  const CLIMATES = {
+    "Cold \u2014 e.g. Minneapolis, MN": {hdd:7700, cdd:700},
+    "Mixed-humid \u2014 e.g. New York, NY": {hdd:4800, cdd:1200},
+    "Hot-humid \u2014 e.g. Miami, FL": {hdd:150, cdd:4500},
+    "Hot-dry \u2014 e.g. Phoenix, AZ": {hdd:1150, cdd:3800},
+    "Marine \u2014 e.g. Seattle, WA": {hdd:4500, cdd:300},
+    "Custom": null
+  };
+
+  let glazingValue = 3;
+  let activityOrder = [];
+
+  function initUI(){
+    // Activities, ordered by typical EUI (low to high) so the dropdown reads meaningfully
+    activityOrder = Object.entries(MODEL.per_activity)
+      .sort((a,b) => a[1].eui_geomean - b[1].eui_geomean)
+      .map(([code]) => code);
+
+    const activitySel = $("activity");
+    activityOrder.forEach(code => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = MODEL.per_activity[code].label;
+      if (MODEL.per_activity[code].label === "Office") opt.selected = true;
+      activitySel.appendChild(opt);
+    });
+
+    const wallSel = $("wall");
+    Object.entries(MODEL.wlcns_labels).forEach(([code, label]) => {
+      const opt = document.createElement("option"); opt.value = code; opt.textContent = label;
+      wallSel.appendChild(opt);
+    });
+    const roofSel = $("roof");
+    Object.entries(MODEL.rfcns_labels).forEach(([code, label]) => {
+      const opt = document.createElement("option"); opt.value = code; opt.textContent = label;
+      roofSel.appendChild(opt);
+    });
+    const vintageSel = $("vintage");
+    Object.entries(VINTAGE_LABELS).forEach(([code, label]) => {
+      const opt = document.createElement("option"); opt.value = code; opt.textContent = label;
+      if (code === "8") opt.selected = true;
+      vintageSel.appendChild(opt);
+    });
+    const climateSel = $("climate");
+    Object.keys(CLIMATES).forEach(c => {
+      const opt = document.createElement("option"); opt.value = c; opt.textContent = c;
+      if (c.startsWith("Mixed-humid")) opt.selected = true;
+      climateSel.appendChild(opt);
+    });
+
+    const glazingScale = $("glazingScale");
+    for (let n = 1; n <= 6; n++){
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.textContent = n;
+      btn.setAttribute("aria-pressed", String(n === glazingValue));
+      btn.addEventListener("click", () => {
+        glazingValue = n;
+        [...glazingScale.children].forEach(c => c.setAttribute("aria-pressed", String(Number(c.textContent) === n)));
+        $("glazingCaption").textContent = "Band " + n + " \u00b7 " + GLAZING_CAPTIONS[n];
+        recompute();
+      });
+      glazingScale.appendChild(btn);
+    }
+
+    climateSel.addEventListener("change", () => {
+      $("customClimateRow").style.display = climateSel.value === "Custom" ? "grid" : "none";
+      recompute();
+    });
+    activitySel.addEventListener("change", () => { fillTypical(); recompute(); });
+    $("useTypical").addEventListener("click", () => { fillTypical(); recompute(); });
+
+    document.querySelectorAll("#inputForm input, #inputForm select").forEach(el => {
+      el.addEventListener("input", recompute);
+      el.addEventListener("change", recompute);
+    });
+
+    fillTypical();
+    recompute();
+  }
+
+  function currentActivity(){ return MODEL.per_activity[$("activity").value]; }
+
+  function fillTypical(){
+    const a = currentActivity();
+    $("sqft").value = Math.round(a.sqft_median);
+    $("floors").value = Math.round(a.floors_median);
+    $("ceiling").value = a.ceiling_median;
+    glazingValue = Math.round(a.glazing_mode);
+    [...$("glazingScale").children].forEach(c => c.setAttribute("aria-pressed", String(Number(c.textContent) === glazingValue)));
+    $("glazingCaption").textContent = "Band " + glazingValue + " \u00b7 " + GLAZING_CAPTIONS[glazingValue];
+    $("wall").value = String(a.wall_mode);
+    $("roof").value = String(a.roof_mode);
+    $("hours").value = Math.round(a.hours_median);
+    $("workers").value = Math.round(a.workers_median);
+    $("open24").checked = a.hours_median >= 167;
+    if ($("climate").value === "Custom"){
+      $("hdd").value = Math.round(a.hdd_median);
+      $("cdd").value = Math.round(a.cdd_median);
+    }
+  }
+
+  function rankOf(varName, rawValue){
+    const scale = MODEL.ordinal_ranks[varName];
+    let idx = scale.indexOf(rawValue);
+    if (idx === -1){
+      // nearest available code (used for floor-count banding: >9 floors -> 994/995 codes)
+      idx = scale.reduce((best,v,i) => Math.abs(v-rawValue) < Math.abs(scale[best]-rawValue) ? i : best, 0);
+    }
+    return idx;
+  }
+
+  function floorsToCode(floors){
+    if (floors <= 9) return floors;
+    if (floors <= 14) return 994;
+    return 995;
+  }
+
+  function currentClimate(){
+    const sel = CLIMATES[$("climate").value];
+    if (sel) return sel;
+    return { hdd: Number($("hdd").value) || 0, cdd: Number($("cdd").value) || 0 };
+  }
+
+  function readInputs(){
+    const activityCode = $("activity").value;
+    const sqft = Math.max(500, Number($("sqft").value) || 1000);
+    const floors = Math.max(1, Number($("floors").value) || 1);
+    const ceiling = Number($("ceiling").value) || 10;
+    const wall = $("wall").value;
+    const roof = $("roof").value;
+    const vintage = Number($("vintage").value);
+    let hours = Number($("hours").value) || 40;
+    if ($("open24").checked) hours = 168;
+    const workers = Number($("workers").value) || 0;
+    const { hdd, cdd } = currentClimate();
+    return { activityCode, sqft, floors, ceiling, wall, roof, vintage, hours, workers, hdd, cdd,
+             open24: $("open24").checked, glazing: glazingValue };
+  }
+
+  // Builds the exact 44-column feature row the concept-stage model expects,
+  // in the exact order MODEL.concept_cols specifies.
+  function buildRow(inp){
+    const row = {};
+    MODEL.concept_cols.forEach(c => row[c] = 0);
+    row.ln_SQFT = Math.log(inp.sqft);
+    row.FLCEILHT_capped = Math.min(inp.ceiling, 50);
+    row.ceiling_over_50ft = inp.ceiling > 50 ? 1 : 0;
+    row.worker_density_per_1000sqft = inp.workers * 1000 / inp.sqft;
+    row.WKHRS = inp.hours;
+    row.HDD65 = inp.hdd;
+    row.CDD65 = inp.cdd;
+    row.NFLOOR = rankOf("NFLOOR", floorsToCode(inp.floors));
+    row.YRCONC = rankOf("YRCONC", inp.vintage);
+    row.GLSSPC = rankOf("GLSSPC", inp.glazing);
+    const pbaCol = "PBA_" + inp.activityCode;
+    if (pbaCol in row) row[pbaCol] = 1;
+    const wlCol = "WLCNS_" + inp.wall;
+    if (wlCol in row) row[wlCol] = 1;
+    const rfCol = "RFCNS_" + inp.roof;
+    if (rfCol in row) row[rfCol] = 1;
+    row.OPEN24_2 = inp.open24 ? 0 : 1;   // reference level 1 = open 24 hours
+    return row;
+  }
+
+  function predictLnEUI(row){
+    const reg = MODEL.regression_coefficients;
+    let ln = reg["const"];
+    MODEL.concept_cols.forEach(c => { ln += reg[c] * row[c]; });
+    return ln;
+  }
+
+  function classify(row){
+    const x = MODEL.concept_cols.map(c => row[c]);
+    const mean = MODEL.scaler_mean, scale = MODEL.scaler_scale;
+    const xs = x.map((v,i) => (v - mean[i]) / scale[i]);
+    const W = MODEL.logit_coef, b = MODEL.logit_intercept;
+    const z = W.map((wrow,k) => b[k] + wrow.reduce((s,wij,j) => s + wij*xs[j], 0));
+    const maxZ = Math.max(...z);
+    const exps = z.map(v => Math.exp(v - maxZ));
+    const sumExp = exps.reduce((a,b)=>a+b,0);
+    const probs = exps.map(v => v/sumExp);
+    const idx = probs.indexOf(Math.max(...probs));
+    return { band: ["Low","Medium","High"][idx], probs };
+  }
+
+  function cutpointsFor(activityCode){
+    const key = MODEL.pooled_activity_codes.includes(Number(activityCode)) ? "-1" : activityCode;
+    return MODEL.cutpoints[key] || MODEL.cutpoints["-1"];
+  }
+
+  const fmt = (n) => n.toLocaleString(undefined, {maximumFractionDigits:1});
+  const pctFrom = (lnDiff) => (Math.exp(lnDiff) - 1) * 100;
+
+  function compute(){
+    const inp = readInputs();
+    const row = buildRow(inp);
+    const lnEUI = predictLnEUI(row);
+    const predictedEUI = Math.exp(lnEUI);
+    const { band, probs } = classify(row);
+    const cuts = cutpointsFor(inp.activityCode);
+    const isPooled = MODEL.pooled_activity_codes.includes(Number(inp.activityCode));
+
+    // Drivers: contribution of each input relative to this activity's own typical row
+    const a = currentActivity();
+    const typicalInputs = {
+      activityCode: inp.activityCode, sqft: a.sqft_median, floors: a.floors_median,
+      ceiling: a.ceiling_median, wall: String(a.wall_mode), roof: String(a.roof_mode),
+      vintage: inp.vintage, hours: a.hours_median, workers: a.workers_median,
+      hdd: a.hdd_median, cdd: a.cdd_median, open24: a.hours_median >= 167, glazing: Math.round(a.glazing_mode)
+    };
+    const typicalRow = buildRow(typicalInputs);
+    const reg = MODEL.regression_coefficients;
+
+    const groups = {
+      "Floor area":        ["ln_SQFT"],
+      "Floors":            ["NFLOOR"],
+      "Ceiling height":    ["FLCEILHT_capped", "ceiling_over_50ft"],
+      "Glazing":           ["GLSSPC"],
+      "Wall construction": MODEL.concept_cols.filter(c => c.startsWith("WLCNS_")),
+      "Roof construction": MODEL.concept_cols.filter(c => c.startsWith("RFCNS_")),
+      "Vintage":           ["YRCONC"],
+      "Operating hours":   ["WKHRS", "OPEN24_2"],
+      "Worker density":    ["worker_density_per_1000sqft"],
+      "Climate":           ["HDD65", "CDD65"],
+    };
+    const drivers = Object.entries(groups).map(([label, cols]) => {
+      const diff = cols.reduce((s,c) => s + reg[c]*(row[c]-typicalRow[c]), 0);
+      return { label, pct: pctFrom(diff) };
+    }).filter(d => Math.abs(d.pct) > 0.05);
+
+    return { predictedEUI, band, probs, cuts, isPooled, drivers, activityLabel: a.label };
+  }
+
+  function render(){
+    const r = compute();
+    const badge = $("bandBadge");
+    badge.className = "band-badge " + r.band.toLowerCase();
+    $("bandName").textContent = r.band;
+    $("euiValue").textContent = fmt(r.predictedEUI);
+    $("rangeValue").textContent = fmt(r.cuts.low) + " / " + fmt(r.cuts.high) + " kBtu/sq ft/yr";
+    $("bandProbs").textContent =
+      `P(low) ${(r.probs[0]*100).toFixed(0)}%   P(medium) ${(r.probs[1]*100).toFixed(0)}%   P(high) ${(r.probs[2]*100).toFixed(0)}%`;
+    $("mediumFlagWrap").style.display = r.band === "Medium" ? "block" : "none";
+    $("pooledFlagWrap").style.display = r.isPooled ? "block" : "none";
+    if (r.isPooled){
+      $("pooledFlagText").textContent =
+        `${r.activityLabel} had too few training buildings to cut its own bands, so it shares cut points with other sparse activities.`;
+    }
+
+    const span = r.cuts.high - r.cuts.low;
+    const rawPos = span > 0 ? (r.predictedEUI - r.cuts.low) / span : 0.5;
+    const pos = Math.min(1.15, Math.max(-0.15, rawPos));
+    const pct = 16.5 + pos * 67;
+    const marker = $("scaleMarker");
+    marker.style.left = Math.min(97, Math.max(2, pct)) + "%";
+    marker.setAttribute("data-label", "this design");
+    $("tickLow").textContent = "low \u00b7 " + fmt(r.cuts.low);
+    $("tickMid").textContent = "medium";
+    $("tickHigh").textContent = "high \u00b7 " + fmt(r.cuts.high);
+
+    const list = $("driversList");
+    list.innerHTML = "";
+    const maxAbs = Math.max(1, ...r.drivers.map(d => Math.abs(d.pct)));
+    r.drivers
+      .sort((a,b) => Math.abs(b.pct) - Math.abs(a.pct))
+      .forEach(d => {
+        const row = document.createElement("div");
+        row.className = "driver-row";
+        const width = Math.min(100, (Math.abs(d.pct) / maxAbs) * 100);
+        const isNeg = d.pct < 0;
+        const barLeft = isNeg ? (50 - width/2) : 50;
+        row.innerHTML =
+          '<span class="d-label">' + d.label + '</span>' +
+          '<span class="d-bar-track"><span class="d-bar-fill' + (isNeg?' negative':'') + '" style="left:' + barLeft + '%; width:' + (width/2) + '%;"></span></span>' +
+          '<span class="d-value ' + (isNeg?'down':'up') + '">' + (d.pct>=0?'+':'') + fmt(d.pct) + '%</span>';
+        list.appendChild(row);
+      });
+    if (r.drivers.length === 0){
+      list.innerHTML = '<p style="font-size:12.5px;color:var(--ink-faint);">Every input matches this activity\'s typical building — no adjustment applied.</p>';
+    }
+  }
+
+  function recompute(){ render(); }
+
+  boot();
+})();
+</script>
+</body>
+</html>
