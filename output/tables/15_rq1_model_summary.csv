@@ -1,0 +1,2 @@
+n_buildings,n_parameters,weighted_R2,weighted_adj_R2,RMSE_log_EUI,RMSE_EUI_kBtu_sqft_yr,AIC,BIC,F_statistic,F_df_model,F_df_resid
+6357,92,0.5607,0.5543,0.6512,65.34,24227.79,24849.46,87.86,91,6265

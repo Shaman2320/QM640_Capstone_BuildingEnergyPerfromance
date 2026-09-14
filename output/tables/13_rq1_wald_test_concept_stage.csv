@@ -1,0 +1,2 @@
+test,n_restrictions,W_statistic,df,p_value,predictors_included
+Joint Wald on concept-stage design block,20,274.344,20,0.0,"ln_SQFT, FLCEILHT_capped, ceiling_over_50ft, worker_density_per_1000sqft, GLSSPC, NFLOOR, WLCNS_2, WLCNS_3, WLCNS_4, WLCNS_5, WLCNS_6, WLCNS_7, WLCNS_8, RFCNS_2, RFCNS_3, RFCNS_4, RFCNS_5, RFCNS_6, RFCNS_7, RFCNS_8"

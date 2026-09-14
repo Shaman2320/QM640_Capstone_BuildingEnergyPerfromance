@@ -1,0 +1,8 @@
+predictor,VIF
+const,1.0
+ln_SQFT,1.167
+FLCEILHT_capped,1.053
+WKHRS,1.149
+worker_density_per_1000sqft,1.051
+HDD65,2.067
+CDD65,2.057
