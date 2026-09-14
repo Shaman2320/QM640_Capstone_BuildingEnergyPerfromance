@@ -1,0 +1,5 @@
+max_features,cols_per_split,holdout_RMSE_log_EUI,beats_OLS,beats_XGBoost
+sqrt,9,0.6293,False,False
+0.33,30,0.6094,False,False
+0.6,55,0.6142,False,False
+1.0,91,0.6188,False,False

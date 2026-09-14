@@ -1,0 +1,17 @@
+variable,mean_abs_shap,share_pct,rank
+PBA (principal activity),0.3933,26.0092,1
+WKHRS,0.2555,16.8978,2
+MAINHT (main heating system),0.24,15.8702,3
+worker_density_per_1000sqft,0.1675,11.0763,4
+HDD65,0.102,6.7429,5
+MAINCL (main cooling system),0.0844,5.5791,6
+ln_SQFT,0.0548,3.6236,7
+CDD65,0.0389,2.5722,8
+GLSSPC,0.0383,2.5353,9
+WLCNS (wall construction),0.0334,2.2086,10
+RFCNS (roof construction),0.0291,1.9243,11
+FLCEILHT_capped,0.0248,1.6408,12
+OPEN24 (24-hour operation),0.0215,1.421,13
+NFLOOR,0.015,0.9892,14
+YRCONC,0.0136,0.8995,15
+ceiling_over_50ft,0.0002,0.01,16

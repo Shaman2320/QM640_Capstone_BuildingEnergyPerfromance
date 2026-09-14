@@ -1,0 +1,4 @@
+model,weighted_RMSE_log_EUI,unweighted_RMSE_log_EUI,rank_weighted,rank_unweighted,rank_agrees
+OLS,0.7376,0.601,2,2,True
+Random Forest,0.7702,0.6293,3,3,True
+XGBoost,0.7371,0.5783,1,1,True

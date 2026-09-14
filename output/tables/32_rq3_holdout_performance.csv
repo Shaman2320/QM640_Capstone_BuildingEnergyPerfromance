@@ -1,0 +1,4 @@
+model,RMSE_log_EUI,MAE_log_EUI,R2_log_EUI,smearing_factor,hit_rate_pm10pct,MdAPE_pct,RMSE_EUI_kBtu_sqft_yr,fit_seconds
+OLS,0.601,0.4387,0.5965,1.1847,0.1651,34.1662,60.8216,0.2379
+Random Forest,0.6293,0.4478,0.5577,1.1188,0.1847,30.9574,61.4038,10.778
+XGBoost,0.5783,0.4226,0.6265,1.0804,0.1792,30.5824,56.8632,9.4859

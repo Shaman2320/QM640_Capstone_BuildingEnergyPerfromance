@@ -1,0 +1,2 @@
+n_buildings,n_predictors,n_train,n_test,cv_protocol,best_model_holdout,best_model_cv,RMSE_OLS_log_EUI,RMSE_best_log_EUI,RMSE_reduction_pct,R2_OLS,R2_best,hit_rate_OLS_pm10pct,hit_rate_best_pm10pct,corrected_t_OLS_vs_best,corrected_p_OLS_vs_best,naive_p_OLS_vs_best,RQ3_decision,shap_model,shap_top_variable,shap_top_share_pct
+6357,91,5085,1272,5-fold x 5 repeats (25 resamples),XGBoost,XGBoost,0.601,0.5783,3.78,0.5965,0.6265,0.1651,0.1792,1.696,0.10284751132493164,0.00012537913849342707,fail to reject H0: no detectable difference,XGBoost,PBA (principal activity),26.01
