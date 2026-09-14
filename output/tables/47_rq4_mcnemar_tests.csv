@@ -1,0 +1,4 @@
+comparison,n_discordant,a_only_correct,b_only_correct,statistic,p_value,favours,significant_at_05
+Multinomial logistic vs Stratified baseline,645,426,219,65.7922480620155,5.010492040408806e-16,Multinomial logistic,True
+Gradient boosting vs Stratified baseline,668,428,240,52.34880239520958,4.646818689709048e-13,Gradient boosting,True
+Multinomial logistic vs Gradient boosting,419,219,200,0.7732696897374701,0.37920744443827037,Multinomial logistic,False

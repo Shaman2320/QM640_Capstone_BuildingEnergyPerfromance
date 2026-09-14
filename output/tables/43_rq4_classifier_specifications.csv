@@ -1,0 +1,4 @@
+model,family,role,specification
+Multinomial logistic,"Linear, softmax link",Interpretable baseline,StandardScaler; C=1.0 (L2); max_iter=5000
+Gradient boosting,Boosted trees,"Flexibility test, carried over from RQ3",max_iter=400; learning_rate=0.06; max_leaf_nodes=31; min_samples_leaf=25; l2_regularization=1.0
+Stratified baseline,Random draw from class priors,Null model for McNemar's test,strategy=stratified

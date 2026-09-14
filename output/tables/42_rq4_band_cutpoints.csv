@@ -1,0 +1,18 @@
+activity_code,activity,n_train,cut_low_medium,cut_medium_high,train_median_EUI
+5,Nonrefrigerated warehouse,570,17.8,37.5,26.0
+12,Religious worship,217,23.8,42.2,33.6
+26,Service,279,28.5,58.9,44.0
+91,Other,66,40.1,100.4,64.7
+25,Retail (other than mall),270,45.6,99.3,73.6
+2,Office,1131,46.0,71.5,58.1
+14,Education,749,49.6,73.7,61.3
+13,Public assembly,385,54.6,107.2,75.6
+8,Outpatient health care,174,58.3,101.9,78.8
+7,Public order and safety,84,60.8,89.5,74.6
+18,Lodging,334,64.1,92.8,77.6
+-1,Pooled sparse activities,101,74.4,181.7,108.6
+17,Nursing,91,92.1,145.1,114.6
+23,Strip shopping mall,166,102.8,138.6,120.6
+16,Inpatient health care,221,155.5,222.4,198.7
+6,Food sales,73,161.5,250.0,206.9
+15,Food service,174,176.5,350.8,244.2

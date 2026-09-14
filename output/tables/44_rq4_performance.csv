@@ -1,0 +1,4 @@
+model,accuracy,balanced_accuracy,macro_F1,weighted_F1,cohens_kappa
+Multinomial logistic,0.4921,0.496,0.485,0.4829,0.2401
+Gradient boosting,0.4772,0.4796,0.4766,0.475,0.2163
+Stratified baseline,0.3294,0.3299,0.3295,0.3294,-0.006

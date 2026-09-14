@@ -1,0 +1,9 @@
+quantity,value
+z for 95% confidence,1.96
+Target half-width (percentage points),5.0
+Worst-case proportion p,0.5
+Required n per class,385.0
+Required test-set n (3 classes),1155.0
+Required total n (80/20 split),5775.0
+Available analysis sample,6357.0
+Margin over requirement (%),10.08

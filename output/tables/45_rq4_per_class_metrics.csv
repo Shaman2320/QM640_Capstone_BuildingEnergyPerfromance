@@ -1,0 +1,10 @@
+model,band,precision,recall,f1,support
+Multinomial logistic,Low,0.4917,0.5985,0.5399,396
+Multinomial logistic,Medium,0.4286,0.3068,0.3576,440
+Multinomial logistic,High,0.5347,0.5826,0.5576,436
+Gradient boosting,Low,0.4897,0.5429,0.515,396
+Gradient boosting,Medium,0.3831,0.35,0.3658,440
+Gradient boosting,High,0.5522,0.5459,0.549,436
+Stratified baseline,Low,0.3215,0.3434,0.3321,396
+Stratified baseline,Medium,0.3272,0.3227,0.3249,440
+Stratified baseline,High,0.3398,0.3234,0.3314,436

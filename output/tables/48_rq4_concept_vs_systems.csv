@@ -1,0 +1,3 @@
+model,macro_F1_concept,macro_F1_with_systems,kappa_concept,kappa_with_systems,macro_F1_gain,kappa_gain,share_of_kappa_from_systems_pct
+Multinomial logistic,0.485,0.5407,0.2401,0.3219,0.0557,0.0818,25.4195
+Gradient boosting,0.4766,0.5041,0.2163,0.2571,0.0275,0.0408,15.8649
