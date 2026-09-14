@@ -193,6 +193,8 @@ clean run reproduces the reported results.
 
 ## The screening tool (`app/`)
 
+https://shaman2320.github.io/QM640_Capstone_BuildingEnergyPerfromance/app/
+
 The `app/` folder contains a small web application that puts the study's findings into a usable
 form: enter the concept-stage parameters of a proposed building and it returns an
 activity-relative energy band (low, medium, or high) with a plain-language reliability caveat.
