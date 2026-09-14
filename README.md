@@ -87,16 +87,16 @@ analysis therefore uses:
   population parameter.
 
 **Weight validation.** Summing `FINALWT` over the raw microdata reproduces the published
-Table B1 estimates to within 0.1 percent: 5,918 thousand commercial buildings against EIA's
-5.9 million, and 96,527 million square feet against 96,423 million. The residual difference
-is attributable to the disclosure masking applied to the public file. After the 79 records
-with missing `MFBTU` are excluded, the analysis sample of 6,357 represents approximately
-5,613 thousand buildings by `FINALWT`. This check is run in the data preparation step and
-should pass on any clean clone.
+Table B1 estimates to within a fraction of a percent, both for building count and for total
+floorspace. The residual difference is attributable to the disclosure masking applied to the
+public file. After the 79 records with missing `MFBTU` are excluded, the analysis sample of
+6,357 represents roughly 5.6 million buildings by `FINALWT`. This check is run in the data
+preparation step and should pass on any clean clone; the exact figures are printed in the
+notebook output.
 
 **Design effect.** The design effect for mean log EUI, computed against the JK2 replicate
-weights, is 6.14. The effective sample size for inferential tests is therefore about 1,036
-buildings, not 6,357.
+weights, is roughly 6, so the effective sample size for inferential tests is about a sixth of
+the raw building count, not the full 6,357. The exact value is reported in the EDA notebook.
 
 ---
 
@@ -118,12 +118,12 @@ Four conventions in the microdata will silently corrupt an analysis if treated n
    the reference year. Site EUI is undefined for them, so they are excluded from the analysis
    sample.
 
-`MAINHT` and `MAINCL` also have systematic missingness (429 and 456 records, 6.75 percent and
-7.17 percent respectively), but this reflects buildings without a main heating or cooling
-system rather than a measurement gap, and is recoded to an explicit "None reported" category
-rather than dropped or imputed. Both this and the `FLCEILHT` top-code fall within the
-single-source data quality taxonomy of Rahm and Do (2000), and are handled by recoding rather
-than record deletion so that the sample size and the JK2 replicate structure stay intact.
+`MAINHT` and `MAINCL` also have systematic missingness (429 and 456 records respectively), but
+this reflects buildings without a main heating or cooling system rather than a measurement gap,
+and is recoded to an explicit "None reported" category rather than dropped or imputed. Both
+this and the `FLCEILHT` top-code fall within the single-source data quality taxonomy of Rahm
+and Do (2000), and are handled by recoding rather than record deletion so that the sample size
+and the JK2 replicate structure stay intact.
 
 Imputation flags (the `Z`-prefixed variables, for example `ZSQFT` for `SQFT`) accompany every
 imputed field. Imputation rates for the modelling variables are reported in the data
@@ -138,43 +138,74 @@ preparation step.
 ├── README.md
 ├── requirements.txt
 ├── data/
-│   ├── raw/
-│   │   ├── cbecs2018_final_public.csv                       # as downloaded from EIA
-│   │   ├── 2018microdata_codebook.xlsx                      # variable and response codebook
-│   │   └── CBECS_2018_Building_Characteristics_Flipbook.pdf # EIA plain-language reference
-│   └── processed/                                           # derived extract (generated)
+│   └── raw/
+│       ├── cbecs2018_final_public.csv                       # as downloaded from EIA
+│       ├── 2018microdata_codebook.xlsx                      # variable and response codebook
+│       └── CBECS_2018_Building_Characteristics_Flipbook.pdf # EIA plain-language reference
 ├── notebooks/
-│   ├── 00_master.ipynb                                      # index, headline results
-│   ├── cbecs_eda_pipeline.ipynb                             # full exploratory analysis
-│   ├── 01_rq1_regression.ipynb                              # RQ1 regression + SHAP driver ranking
-│   ├── 02_rq2_vintage.ipynb                                 # RQ2 Wald test on vintage
-│   ├── 03_rq3_model_comparison.ipynb                        # RQ3 OLS vs. RF vs. XGBoost
-│   └── 04_rq4_classification.ipynb                          # RQ4 energy-band classifier
-├── src/
-│   └── prepare.py                                           # cleaning, EUI, survey design
-└── outputs/
-    ├── figures/
-    └── tables/
+│   ├── cbecs_eda_pipeline.ipynb                             # cleaning, EUI, survey design, full EDA
+│   ├── rq1_survey_weighted_regression.ipynb                # RQ1 regression + SHAP driver ranking
+│   ├── rq2_vintage_cohort_comparison.ipynb                 # RQ2 design-based Wald test on vintage
+│   ├── rq3_model_comparison.ipynb                          # RQ3 OLS vs. RF vs. XGBoost
+│   └── rq4_energy_band_classification.ipynb                # RQ4 energy-band classifier
+├── output/
+│   ├── figures/                                            # generated charts (PNG)
+│   └── tables/                                             # generated tables (CSV)
+├── app/                                                    # concept-stage screening web tool
+│   ├── index.html                                          # the interface
+│   ├── model.json                                          # fitted coefficients, exported
+│   ├── export_model.py                                     # regenerates model.json from raw data
+│   └── README.md                                           # app-specific notes
+└── src/                                                    # reserved for shared modules
 ```
 
-Code is added incrementally as the analysis proceeds. Data preparation, the full exploratory
-analysis, and the sampling-weight validation are complete as of the interim report. Modelling
-for each research question is in progress.
+Every figure and table in `output/` is generated by the notebooks, not committed by hand. Each
+notebook writes its own outputs and, when run in Colab, commits and pushes them back to the
+repository.
 
 ---
 
 ## Reproducing the analysis
 
+The notebooks read the raw CBECS file directly from this repository, so they can be run in
+Google Colab with no local setup, or locally after a clone.
+
 ```bash
 git clone https://github.com/Shaman2320/QM640_Capstone_BuildingEnergyPerfromance.git
 cd QM640_Capstone_BuildingEnergyPerfromance
 pip install -r requirements.txt
-python src/prepare.py                              # writes data/processed/, runs the weight validation
-jupyter notebook notebooks/00_master.ipynb         # entry point; links out to the per-RQ notebooks
 ```
 
-The master notebook is the single entry point: it re-executes each RQ notebook in order and
-surfaces the headline results in one place.
+Run the notebooks **in this order**, because each research-question notebook reads the
+engineered predictor matrix that the EDA notebook writes to `output/tables/`:
+
+1. `notebooks/cbecs_eda_pipeline.ipynb` — cleaning, survey-weight validation, exploratory
+   analysis, and the shared engineered predictor matrix
+2. `notebooks/rq1_survey_weighted_regression.ipynb`
+3. `notebooks/rq2_vintage_cohort_comparison.ipynb`
+4. `notebooks/rq3_model_comparison.ipynb`
+5. `notebooks/rq4_energy_band_classification.ipynb`
+
+Each notebook is self-contained and re-executes top to bottom. Random seeds are fixed, so a
+clean run reproduces the reported results.
+
+---
+
+## The screening tool (`app/`)
+
+The `app/` folder contains a small web application that puts the study's findings into a usable
+form: enter the concept-stage parameters of a proposed building and it returns an
+activity-relative energy band (low, medium, or high) with a plain-language reliability caveat.
+
+It runs the study's actual fitted models client-side. The regression coefficients and the
+classifier are exported to `app/model.json` by `app/export_model.py`, which reproduces the
+cleaning pipeline from the raw file and refits both models, so the tool never drifts from the
+analysis. To refresh it after any change to the pipeline, rerun `export_model.py` and replace
+`model.json`.
+
+Because the page loads `model.json` with a browser `fetch`, it must be served over HTTP rather
+than opened directly from disk. Serve it locally with `python3 -m http.server` from inside
+`app/`, or host the folder on GitHub Pages. See `app/README.md` for details.
 
 ---
 
